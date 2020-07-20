@@ -97,11 +97,16 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
         EndlessScrollListener endlessScrollListener = new EndlessScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                progressBar.setVisibility(View.VISIBLE);
                 carPage++;
-                getCarsData(carPage);
+                if (carPage < 5) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    getCarsData(carPage);
+                } else {
+                    setupTopSnackbar(Color.RED, "No more data found !");
+                    progressBar.setVisibility(View.GONE);
+                }
 
-
+                Log.d(TAG, "carPage: " + carPage);
             }
         };
 
@@ -146,10 +151,10 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
         carsListViewModel.getCarsData().observe(this, new Observer<Resource>() {
             @Override
             public void onChanged(Resource resource) {
-                progressBar.setVisibility(View.GONE);
 
                 switch (resource.getStatus()) {
                     case SUCCESS:
+                        progressBar.setVisibility(View.GONE);
                         mSwipeRLayout.setRefreshing(false);
 
                         hideLoading();
@@ -171,6 +176,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
 
                         break;
                     case ERROR:
+                        progressBar.setVisibility(View.GONE);
                         mSwipeRLayout.setRefreshing(false);
 
                         hideLoading();
