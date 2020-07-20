@@ -18,15 +18,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
-
-        <activity android:name=".View.MainActivity">
+        <activity android:name=".View.Activity.BaseActivity"></activity>
+        <activity android:name=".View.Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service
             android:name=".Utils.BaseService"
@@ -41,7 +40,6 @@
                 <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
