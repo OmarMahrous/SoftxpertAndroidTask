@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 public abstract class EndlessScrollListener extends RecyclerView.OnScrollListener {
 
-    private final String TAG = EndlessScrollListener.class.getSimpleName();
-
-    /// The minimum amount of items to have below your current scroll position
+    // The minimum amount of items to have below your current scroll position
     // before loading more.
-    private int visibleThreshold = 10;
+    private int visibleThreshold = 5;
     // The current offset index of data you have loaded
-    private int currentPage = 1;
+    private int currentPage = 0;
     // The total number of items in the dataset after the last load
     private int previousTotalItemCount = 0;
     // True if we are still waiting for the last set of data to load.
@@ -25,30 +23,29 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     // Sets the starting page index
     private int startingPageIndex = 0;
 
-    LinearLayoutManager mLayoutManager;
-
-    boolean isLoading = false;
+    RecyclerView.LayoutManager mLayoutManager;
 
     public EndlessScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
     }
 
-//    public EndlessScrollListener(GridLayoutManager layoutManager) {
-//        this.mLayoutManager = layoutManager;
-//        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
-//    }
-//
-//    public EndlessScrollListener(StaggeredGridLayoutManager layoutManager) {
-//        this.mLayoutManager = layoutManager;
-//        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
-//    }
+    public EndlessScrollListener(GridLayoutManager layoutManager) {
+        this.mLayoutManager = layoutManager;
+        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
+    }
+
+    public EndlessScrollListener(StaggeredGridLayoutManager layoutManager) {
+        this.mLayoutManager = layoutManager;
+        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
+    }
 
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
             if (i == 0) {
                 maxSize = lastVisibleItemPositions[i];
-            } else if (lastVisibleItemPositions[i] > maxSize) {
+            }
+            else if (lastVisibleItemPositions[i] > maxSize) {
                 maxSize = lastVisibleItemPositions[i];
             }
         }
@@ -60,11 +57,18 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
     // but first we check if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
+        int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
 
-
-        int lastVisibleItemPosition = mLayoutManager.findLastCompletelyVisibleItemPosition();
-
+        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
+            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
+            // get maximum element within the list
+            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
+        } else if (mLayoutManager instanceof GridLayoutManager) {
+            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        } else if (mLayoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        }
 
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
@@ -91,17 +95,6 @@ public abstract class EndlessScrollListener extends RecyclerView.OnScrollListene
             currentPage++;
             onLoadMore(currentPage, totalItemCount, view);
             loading = true;
-//            Log.d(TAG, "onLoadMore: true");
-        }
-
-        if (!loading) {
-            if (mLayoutManager != null && lastVisibleItemPosition == totalItemCount - 1) {
-                //bottom of list!
-                currentPage++;
-                onLoadMore(currentPage, totalItemCount, view);
-                loading = true;
-                Log.d(TAG, "onLoadMore: true");
-            }
         }
     }
 

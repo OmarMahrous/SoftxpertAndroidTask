@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
     private List<Car> mCarsList = new ArrayList<>();
     private RecyclerView mCarsRecView;
 
-    int page = 1;
+    int carPage = 1;
     private CarsListViewModel carsListViewModel;
     private MySwipeToRefresh mSwipeRLayout;
     private boolean isLoading = false;
@@ -67,11 +67,14 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
         registerReceiver(new NetworkStateChangeReceiver(this),
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+
         initViews();
 
-//        populateCarsData(mCarsList);
+        carsAdapter = new CarsListAdapter(this, mCarsList);
 
-        getCarsData(1);
+        populateCarsData(mCarsList);
+
+        getCarsData(carPage);
 
 
     }
@@ -90,7 +93,19 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
         mCarsRecView = (RecyclerView) findViewById(R.id.cars_rec_view);
         linearLayoutManager = new LinearLayoutManager(this);
         mCarsRecView.setLayoutManager(linearLayoutManager);
+        ViewCompat.setNestedScrollingEnabled(mCarsRecView, false);
+        EndlessScrollListener endlessScrollListener = new EndlessScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                progressBar.setVisibility(View.VISIBLE);
+                carPage++;
+                getCarsData(carPage);
 
+
+            }
+        };
+
+        mCarsRecView.addOnScrollListener(endlessScrollListener);
     }
 
     private void setupTopSnackbar(int backgroundColor, String message) {
@@ -104,25 +119,12 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
     }
 
 
-
-
-
     private void populateCarsData(List<Car> cars) {
-        carsAdapter = new CarsListAdapter(this, cars, mCarsRecView);
+        mCarsList.addAll(cars);
         mCarsRecView.setAdapter(carsAdapter);
         carsAdapter.refresh();
-        ViewCompat.setNestedScrollingEnabled(mCarsRecView, false);
-        carsAdapter.appendNewPageCars(cars);
-        carsAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                progressBar.setVisibility(View.VISIBLE);
-                page++;
-                getCarsData(page);
+        carsAdapter.notifyItemRangeInserted(carsAdapter.getItemCount(), mCarsList.size() - 1);
 
-                Log.d(TAG, "page: "+page);
-            }
-        });
     }
 
     private void getCarsData(int page) {
@@ -161,7 +163,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
                             CarsResponse carsResponse = (CarsResponse) resource.getData();
 
 
-                                populateCarsData(carsResponse.getData());
+                            populateCarsData(carsResponse.getData());
 
 
                         }
@@ -178,7 +180,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
                         Helper.toast(MainActivity.this, resource.getMessage());
                         break;
                     case LOADING:
-
+                        progressBar.setVisibility(View.VISIBLE);
 
                         break;
                 }
@@ -189,11 +191,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
     private void prepareEndlessScroll() {
 
 
-
-
     }
-
-
 
 
     @Override
@@ -206,7 +204,7 @@ public class MainActivity extends BaseActivity implements NetworkStateChangeRece
             @Override
             public void run() {
                 // Stop animation (This will be after 5 seconds)
-                mSwipeRLayout.setRefreshing(false);
+//                mSwipeRLayout.setRefreshing(false);
             }
         }, 5000); // Delay in millis
     }

@@ -38,52 +38,14 @@ public class CarsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private OnLoadMoreListener onLoadMoreListener;
     private boolean isScroll;
 
-    public CarsListAdapter(Context context, List<Car> cars, RecyclerView recyclerView) {
+    public CarsListAdapter(Context context, List<Car> cars) {
         this.context = context;
         this.cars = cars;
 
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView
-                    .getLayoutManager();
-
-
-            recyclerView
-                    .addOnScrollListener(new RecyclerView.OnScrollListener() {
-                        @Override
-                        public void onScrolled(RecyclerView recyclerView,
-                                               int dx, int dy) {
-                            super.onScrolled(recyclerView, dx, dy);
-//                            int currentItems = linearLayoutManager.getChildCount();
-                            totalItemCount = linearLayoutManager.getItemCount();
-                            scrollOutItem = linearLayoutManager
-                                    .findLastVisibleItemPosition();
-
-
-//                            if (dy > 0) {
 
 
 
-                                if (!loading&& (totalItemCount)<=(scrollOutItem+visibleThreshold))
-                                {
-                                    // End has been reached
-                                    // Do something
-                                    if (onLoadMoreListener != null) {
-                                        onLoadMoreListener.onLoadMore();
-                                    }
-                                    loading = true;
-                                }
 
-                            }
-//                        }
-
-                        @Override
-                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                            super.onScrollStateChanged(recyclerView, newState);
-
-                        }
-                    });
-        }
 
     }
 
@@ -95,9 +57,13 @@ public class CarsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public void appendNewPageCars(List<Car> cars) {
-        cars.addAll(cars);
-    }
+//    public void appendNewPageCars(List<Car> cars) {
+//        cars.addAll(cars);
+//    }
+//
+//    public List<Car> getAllCars(){
+//        return cars;
+//    }
 
     public void addLoadingItem(Car car){
         cars.add(car);
