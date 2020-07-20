@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.skyhosting.softxpertandroidtask"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+    }
+
+    buildTypes {
+        release {
+            release {
+                // Enables code shrinking, obfuscation, and optimization for only
+                // your project's release build type.
+                minifyEnabled true
+
+
+                // Enables resource shrinking, which is performed by the
+                // Android Gradle plugin.
+                shrinkResources true
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'androidx.legacy:legacy-support-v13:1.0.0'
+
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+
+    // Glide Library
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+
+    // Rx Fast Networking Library
+    implementation 'com.amitshekhar.android:rx2-android-networking:1.0.2'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2@aar'
+
+    // Top SnackBar Library
+    implementation 'com.androidadvance:topsnackbar:1.1.1'
+
+    implementation 'org.jetbrains:annotations-java5:15.0'
+
+
+}

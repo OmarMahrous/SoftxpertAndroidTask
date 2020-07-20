@@ -1,0 +1,53 @@
+<resources>
+    <dimen name="fab_margin">25.6dp</dimen>
+    <dimen name="rv_padding_bottom">102.4dp</dimen>
+    <dimen name="circle_image_height">160dp</dimen>
+    <dimen name="padding_15">24dp</dimen>
+    <dimen name="circle_image_width">160dp</dimen>
+    <dimen name="padding_right_toolbar">48dp</dimen>
+    <dimen name="padding_default">8dp</dimen>
+
+    <dimen name="padding_7">11.2dp</dimen>
+    <dimen name="padding_10">16dp</dimen>
+    <dimen name="activity_vertical_margin">25.6dp</dimen>
+    <dimen name="padding_20">32dp</dimen>
+    <dimen name="padding_25">40dp</dimen>
+    <dimen name="padding_35">56dp</dimen>
+    <dimen name="padding_3">4.8dp</dimen>
+    <dimen name="padding_40">64dp</dimen>
+    <dimen name="padding_50">80dp</dimen>
+    <dimen name="padding_60">96dp</dimen>
+
+    <dimen name="padding_65">104dp</dimen>
+
+    <dimen name="padding_70">112dp</dimen>
+
+    <dimen name="padding_75">120dp</dimen>
+
+    <dimen name="padding_105">168dp</dimen>
+
+    <dimen name="margin_overlap">-32dp</dimen>
+    <dimen name="activity_horizontal_margin">25.6dp</dimen>
+    <dimen name="nav_header_height">281.6dp</dimen>
+    <dimen name="text_title">30.4sp</dimen>
+    <dimen name="text_default">24sp</dimen>
+    <dimen name="text_xsmall">16sp</dimen>
+    <dimen name="text_very_small">11.2sp</dimen>
+    <dimen name="text_big">48sp</dimen>
+    <dimen name="text_small">20.8sp</dimen>
+
+    <dimen name="slider_height">224dp</dimen>
+
+    <dimen name="home_toolbar_height">232dp</dimen>
+
+    <dimen name="padding_185">296dp</dimen>
+
+    <dimen name="padding_200">320dp</dimen>
+
+    <dimen name="padding_250">400dp</dimen>
+
+    <dimen name="padding_275">440dp</dimen>
+
+    <dimen name="padding_300">480dp</dimen>
+
+</resources>
