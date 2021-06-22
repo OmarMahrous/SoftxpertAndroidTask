@@ -43,10 +43,6 @@ public class CarsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.cars = cars;
 
 
-
-
-
-
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
@@ -65,7 +61,7 @@ public class CarsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        return cars;
 //    }
 
-    public void addLoadingItem(Car car){
+    public void addLoadingItem(Car car) {
         cars.add(car);
     }
 
@@ -132,10 +128,14 @@ public class CarsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void configureCarViews(Car car, CarsViewHolder holder) {
-        Glide.with(context)
-                .load(car.getImageUrl())
-                .placeholder(R.drawable.car)
-                .into(holder.mCarImage);
+        String imageUrl = car.getImageUrl();
+
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(context)
+                    .load(car.getImageUrl())
+                    .placeholder(R.drawable.car)
+                    .into(holder.mCarImage);
+        }
 
         holder.mCarBrand.setText(car.getBrand());
 

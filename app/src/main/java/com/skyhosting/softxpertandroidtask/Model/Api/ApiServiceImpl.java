@@ -15,7 +15,7 @@ import okhttp3.OkHttpClient;
 public class ApiServiceImpl implements ApiService {
 
 
-    private final String BASE_URL = "http://demo1286023.mockable.io/api/v1/cars?page={page}";
+    private final String BASE_URL = "http://demo1585915.mockable.io/api/v1/cars?page={page}";
 
     private int page;
 
